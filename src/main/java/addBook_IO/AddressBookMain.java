@@ -1,249 +1,109 @@
 package addBook_IO;
-import java.util.LinkedList;
-import java.util.List;
+
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class AddressBookMain {
-
-	static List<Contact> addressBook;
-
 	public static void main(String[] args) {
-		addressBook = new LinkedList<Contact>();
-
-		boolean isExit = false;
-
-		System.out.println("Welcome to the Address book, Take a charge on your contacts " + "with the Address book");
-		Scanner scanner = new Scanner(System.in);
-		while (!isExit) {
-			System.out.println("Select the below option");
-			if (addressBook.isEmpty()) {
-				System.out.println("1. Add Contact" + "\n5. Exit");
-			} else {
-				System.out.println(
-						"1. Add Contact" + "\n2. Display Contact" + "\n3. Edit Contact" + "\n4. Delete Contact" + "\n5. Exit");
-			}
-			String option = scanner.nextLine();
-
-			switch (option) {
-			case "1":
-				addContact(scanner);
+		Scanner s = new Scanner(System.in);
+		int ch,count;
+		int ans;
+		String state, city;
+		Add_Book c = new  Add_Book();
+		do {
+			System.out.println("Enter the choice : ");
+			System.out.println("1.Add ");
+			System.out.println("2.Display");
+			System.out.println("3.Edit");
+			System.out.println("4.Delete");
+			System.out.println("5.Search By State name");
+			System.out.println("6.Search By City name");
+			System.out.println("7.view By State name");
+			System.out.println("8.View By City name");
+			System.out.println("9.Count Persons By City");
+			System.out.println("10.Count Persons By State");
+			System.out.println("11.Sort by first name");
+			System.out.println("12.Sort by city name");
+			System.out.println("13.Sort by state name");
+			System.out.println("14.Sort by zip code");
+			System.out.println("15.Write data to file");
+			System.out.println("16.Read data from file");
+			System.out.println("17.Write data to csv file");
+			System.out.println("18.Read data from csv file");
+			ch= s.nextInt();
+			switch(ch) {
+			case 1: 
+				c.readData();
 				break;
-
-			case "2":
-				showContacts();
+			case 2:
+				c.DisplayContacts();
 				break;
-
-			case "3":
-				editContact(scanner);
+			case 3:
+				System.out.println("\nEnter first name to edit :- ");
+				String name = s.next();
+				c.DataEdit(name);
 				break;
-
-			case "4":
-				deleteContact(scanner);
+			case 4:
+				c.DataDelete();
 				break;
-
-			case "5":
-				isExit = true;
-				showContacts();
+			case 5:
+				System.out.println("\nEnter the state to display details :- ");
+				state = s.next();
+				c.searchPersonByState(state);
 				break;
-
-			default:
+			case 6:
+				System.out.println("\nEnter the city to display details :- ");
+				city = s.next();
+				c.searchPersonByCity(city);
 				break;
-			}
-		}
-		scanner.close();
-	}
-
-	private static void addContact(Scanner scanner) {
-		Contact contact = new Contact();
-
-		System.out.println("Enter First Name: ");
-		String firstName = scanner.nextLine();
-		contact.setFirstName(validateFirstName(firstName, scanner));
-
-		System.out.println("Enter Last Name: ");
-		String lastName = scanner.nextLine();
-		contact.setLastName(validateLastName(lastName, scanner));
-
-		System.out.println("Enter Your Email: ");
-		String email = scanner.nextLine();
-		contact.setEmail(validateEmail(email, scanner));
-
-		System.out.println("Enter Phone Number: ");
-		String phoneNumber = scanner.nextLine();
-		contact.setPhoneNumber(validatePhone(phoneNumber, scanner));
-
-		System.out.println("Enter Your City Name : ");
-		String city = scanner.nextLine();
-		contact.setCity(validateCity(city, scanner));
-
-		System.out.println("Enter Zip Code: ");
-		String zip = scanner.nextLine();
-		contact.setZip(validateZip(zip, scanner));
-
-		System.out.println("Enter Your State Name: ");
-		String state = scanner.nextLine();
-		contact.setState(validateState(state, scanner));
-
-		addressBook.add(contact);
-		System.out.println("Contact has been saved.");
-	}
-
-	private static void editContact(Scanner scanner) {
-		System.out.println("Which contact you want to Edit? (Enter the First name)");
-		String firstName = scanner.nextLine();
-
-		Contact editContact = null;
-		for (int i = 0; i < addressBook.size(); i++) {
-			if (firstName.equals(addressBook.get(i).getFirstName())) {
-				editContact = addressBook.get(i);
-			}
-		}
-
-		if (editContact == null) {
-			System.out.println("No contact found with name " + firstName + ".");
-		} else {
-			editContactDetails(editContact, scanner);
-		}
-	}
-
-	private static void editContactDetails(Contact editContact, Scanner scanner) {
-		System.out.println("Enter First Name: ");
-		String firstName = scanner.nextLine();
-		editContact.setFirstName(validateFirstName(firstName, scanner));
-
-		System.out.println("Enter Your Email: ");
-		String email = scanner.nextLine();
-		editContact.setEmail(validateEmail(email, scanner));
-
-		System.out.println("Enter Phone Number: ");
-		String phoneNumber = scanner.nextLine();
-		editContact.setPhoneNumber(validatePhone(phoneNumber, scanner));
-
-		System.out.println("Contact has been edited.");
-	}
-
-	private static void deleteContact(Scanner scanner) {
-		System.out.println("Which contact you want to Delete? (Enter the First name)");
-		String firstName = scanner.nextLine();
-
-		Contact deleteContact = null;
-		for (int i = 0; i < addressBook.size(); i++) {
-			if (firstName.equals(addressBook.get(i).getFirstName())) {
-				deleteContact = addressBook.remove(i);
-			}
-		}
-
-		if (deleteContact == null) {
-			System.out.println("No contact found with name " + firstName + ".");
-		} else {
-			System.out.println(deleteContact.getFirstName() + "'s contact has been removed from your Address Book.");
-		}
-	}
-
-	private static void showContacts() {
-		if (addressBook.isEmpty()) {
-			System.out.println("Address book is empty.");
-		} else {
-			for (Contact contact : addressBook) {
-				System.out.println(contact);
-			}
-		}
-	}
-
-	public static String validateFirstName(String firstName, Scanner scanner) {
-		String resultPattern = "^[A-Z]{1}[a-z]{2,9}$";
-		Pattern regex = Pattern.compile(resultPattern);
-		Matcher inputMatcher = regex.matcher(firstName);
-
-		while (!inputMatcher.matches()) {
-			System.out.println("Error: Invalid first name, please try again");
-			System.out.println("length must not exceeds 10 ");
-			firstName = scanner.nextLine();
-			inputMatcher = regex.matcher(firstName);
-		}
-		return firstName;
-	}
-
-	public static String validateLastName(String lastName, Scanner scanner) {
-		String resultPattern = "^[A-Z]{1}[a-z]{2,9}$";
-		Pattern regex = Pattern.compile(resultPattern);
-		Matcher inputMatcher = regex.matcher(lastName);
-
-		while (!inputMatcher.matches()) {
-			System.out.println("Error: Invalid first name, please try again");
-			System.out.println("length must not exceeds 10 ");
-			lastName = scanner.nextLine();
-			inputMatcher = regex.matcher(lastName);
-		}
-		return lastName;
-	}
-
-	public static String validatePhone(String phone, Scanner scanner) {
-		String resultPattern = "^[+]{0,1}[0-9]{0,2}[0-9]{10}$";
-		Pattern regex = Pattern.compile(resultPattern);
-		Matcher inputMatcher = regex.matcher(phone);
-
-		while (!inputMatcher.matches()) {
-			System.out.println("Error: Invalid Phone number, please try again");
-			phone = scanner.nextLine();
-			inputMatcher = regex.matcher(phone);
-		}
-		return phone;
-	}
-
-	public static String validateEmail(String email, Scanner scanner) {
-		String resultPattern = "^[a-z.]{2,30}@{1}[a-z]{3,10}.[a-z]{3}$";
-		Pattern regex = Pattern.compile(resultPattern);
-		Matcher inputMatcher = regex.matcher(email);
-
-		while (!inputMatcher.matches()) {
-			System.out.println("Error: Invalid Email, please try again");
-			email = scanner.nextLine();
-			inputMatcher = regex.matcher(email);
-		}
-		return email;
-	}
-
-	public static String validateCity(String city, Scanner scanner) {
-		String resultPattern = "^[A-Z]{1}[a-z]{2,9}$";
-		Pattern regex = Pattern.compile(resultPattern);
-		Matcher inputMatcher = regex.matcher(city);
-
-		while (!inputMatcher.matches()) {
-			System.out.println("Error: Invalid City name, please try again");
-			System.out.println("length must not exceeds 10 ");
-			city = scanner.nextLine();
-			inputMatcher = regex.matcher(city);
-		}
-		return city;
-	}
-
-	public static String validateZip(String zip, Scanner scanner) {
-		String resultPattern = "^[0-9]{6}$";
-		Pattern regex = Pattern.compile(resultPattern);
-		Matcher inputMatcher = regex.matcher(zip);
-
-		while (!inputMatcher.matches()) {
-			System.out.println("Error: Invalid Zip Code, please try again");
-			zip = scanner.nextLine();
-			inputMatcher = regex.matcher(zip);
-		}
-		return zip;
-	}
-
-	public static String validateState(String state, Scanner scanner) {
-		String resultPattern = "^[A-Z]{1}[a-z]{2,9}$";
-		Pattern regex = Pattern.compile(resultPattern);
-		Matcher inputMatcher = regex.matcher(state);
-
-		while (!inputMatcher.matches()) {
-			System.out.println("Error: Invalid City name, please try again");
-			System.out.println("length must not exceeds 10");
-			state = scanner.nextLine();
-			inputMatcher = regex.matcher(state);
-		}
-		return state;
+			case 7:
+				System.out.println("\nEnter the state :- ");
+				state = s.next();
+				c.viewPersonByState(state);;
+				break;
+			case 8:
+				System.out.println("\nEnter the city :- ");
+				city = s.next();
+				c.viewPersonByCity(city);;
+				break;
+			case 9:
+				System.out.println("\nEnter the city to find person in city :- ");
+				city = s.next();
+				count = c.countPersonsByCity(city);
+				System.out.println("Number of persons by city "+city+" is "+count);
+				break;
+			case 10:
+				System.out.println("\nEnter the state to find person in state  :- ");
+				state = s.next();
+				count = c.countPersonsByState(state);
+				System.out.println("Number of persons by state "+state+" is "+count);
+				break;
+			case 11:
+				c.sortByFirstName();
+				break;
+			case 12:
+				c.sortByCity();
+				break;
+			case 13:
+				c.sortByState();
+				break;
+			case 14:
+				c.sortByZip();
+				break;
+			case 15:
+				c.writeData();
+				break;
+			case 16:
+				c.readData();
+				break;
+			case 17:
+				c.writeDataCSV();
+				break;
+			case 18:
+				c.readFileDataCSV();
+				break;
+			}System.out.println("Do you want to continue? if yes press '1' ");
+			ans = s.nextInt();
+		}while(ans == 1);
+		s.close();
 	}
 }

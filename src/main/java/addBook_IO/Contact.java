@@ -1,75 +1,104 @@
 package addBook_IO;
 
 public class Contact {
-
-	private String firstName;
-	private String lastName;
-	private String phoneNumber;
-	private String email;
-	private String city;
-	private String zip;
-	private String state;
-
+	private String FirstName;
+	private String LastName;
+	private String Address;
+	private String City;
+	private String State;
+	private int Zip;
+	private long PhoneNo;
+	private String Email;
+	public Contact(String first, String last, String add, String city, String state,
+			int zip, long phone, String email) {
+		this.FirstName = first;
+		this.LastName = last;
+		this.Address = add;
+		this.City = city;
+		this.State = state;
+		this.Zip = zip;
+		this.PhoneNo = phone;
+		this.Email = email;
+	}
 	public String getFirstName() {
-		return firstName;
+		return FirstName;
 	}
 
 	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+		this.FirstName = firstName;
 	}
 
 	public String getLastName() {
-		return lastName;
+		return LastName;
 	}
 
 	public void setLastName(String lastName) {
-		this.lastName = lastName;
+		this.LastName = lastName;
 	}
 
-	public String getPhoneNumber() {
-		return phoneNumber;
+	public String getAddress() {
+		return Address;
 	}
 
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
+	public void setAddress(String address) {
+		this.Address = address;
 	}
 
 	public String getCity() {
-		return city;
+		return City;
 	}
-
+	
 	public void setCity(String city) {
-		this.city = city;
-	}
-
-	public String getZip() {
-		return zip;
-	}
-
-	public void setZip(String zip) {
-		this.zip = zip;
+		this.City = city;
 	}
 
 	public String getState() {
-		return state;
+		return State;
 	}
 
 	public void setState(String state) {
-		this.state = state;
+		this.State = state;
 	}
+
+	public int getZip() {
+		return Zip;
+	}
+
+	public void setZip(int zip) {
+		this.Zip = zip;
+	}
+
+	public long getPhoneNo() {
+		return PhoneNo;
+	}
+
+	public void setPhoneNo(long phoneNo) {
+		this.PhoneNo = phoneNo;
+	}
+
+	public String getEmail() {
+		return Email;
+	}
+
+	public void setEmail(String email) {
+		this.Email = email;
+	}
+
 
 	@Override
 	public String toString() {
-		return "Contact [firstName=" + firstName + ", lastName=" + lastName + ", phoneNumber=" + phoneNumber
-				+ ", email=" + email + ", city=" + city + ", zip=" + zip + ", state=" + state + "]";
+		return	"\n First name : " + FirstName + 
+				"\n Last name : " + LastName +
+				"\n Address : " + Address +
+				"\n City : " + City +
+				"\n State : " + State +
+				"\n Zip code : " + Zip +
+				"\n Phone number : " + PhoneNo +
+				"\n Email : " + Email ;
 	}
 
+	public static void main(String[] args) {
+		Contact a = new Contact("Ritesh","Khunte","Asegaon","Amravati","maharashtra",444806,916811290,"nrup@gmail.com") ;
+		a.toString();
+	}
 }
