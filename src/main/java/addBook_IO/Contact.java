@@ -9,6 +9,7 @@ public class Contact {
 	private int Zip;
 	private long PhoneNo;
 	private String Email;
+
 	public Contact(String first, String last, String add, String city, String state,
 			int zip, long phone, String email) {
 		this.FirstName = first;
@@ -98,7 +99,7 @@ public class Contact {
 	}
 
 	public static void main(String[] args) {
-		Contact a = new Contact("Ritesh","Khunte","Asegaon","Amravati","maharashtra",444806,916811290,"nrup@gmail.com") ;
+		Contact a = new Contact("Ritesh","Khunte","Asegaon","Amravati","maharashtra",444806,916811290,"riteshkhunte@gmail.com") ;
 		a.toString();
 	}
 }

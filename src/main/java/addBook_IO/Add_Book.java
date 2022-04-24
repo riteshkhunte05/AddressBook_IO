@@ -1,10 +1,14 @@
 package addBook_IO;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Reader;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
@@ -38,18 +42,18 @@ public class Add_Book {
 		System.out.println("Enter the email : ");
 		email = s.next();
 		Add_Book book = new Add_Book();
-		duplicate = book.DuplicateNameCheck( first ,last);
+		duplicate = book.checkDuplicateName( first ,last);
 		if(duplicate == false) {
 			Contact contact = new Contact(first , last , add , city , state , zip , phoneNo , email);
 			contactBook.add(contact);
 			System.out.println("\nContact added Successfully.");
 		}
 		else {
-			System.out.println("This contact is already exist");
+			System.out.println("Entered name is exist");
 		}
 	}
 
-	public boolean DuplicateNameCheck(String first,String last) {
+	public boolean checkDuplicateName(String first,String last) {
 		int i;
 		boolean duplicate = false ;
 		for(i=0;i<contactBook.size();i++) {
@@ -60,7 +64,7 @@ public class Add_Book {
 		}
 		return duplicate;
 	}
-	public void DataEdit(String name) {
+	public void editData(String name) {
 		int i,ans;
 		for(i=0;i<contactBook.size();i++) {
 			if(contactBook.get(i).getFirstName().equals(name)) {
@@ -118,7 +122,7 @@ public class Add_Book {
 		}
 	}
 
-	public void DataDelete() {
+	public void deleteData() {
 		int i;
 		System.out.println("\nEnter first name to delete : ");
 		String name = s.next();
@@ -267,4 +271,33 @@ public class Add_Book {
 		            e.printStackTrace();
 		        }
 		    }  
+		    public void writeDataInJSon() throws IOException {
+		        {
+		            Path filePath = Paths.get("data.json");
+		            Gson gson = new Gson();
+		            String json = gson.toJson(contactBook);
+		            FileWriter writer = new FileWriter(String.valueOf(filePath));
+		            writer.write(json);
+		            writer.close();
+		        }
+		    }
+
+		    public void readDataFromJson() throws IOException {
+		        ArrayList<Contact> contactList = null;
+		        Path filePath = Paths.get("data.json");
+		        try (Reader reader = Files.newBufferedReader(filePath);) {
+		            Gson gson = new Gson();
+		            contactList = new ArrayList<Contact>(Arrays.asList(gson.fromJson(reader, Contact[].class)));
+		            for (Contact contact : contactList) {
+		                System.out.println("Firstname : " + contact.getFirstName());
+		                System.out.println("Lastname : " + contact.getLastName());
+		                System.out.println("Address : " + contact.getAddress());
+		                System.out.println("City : " + contact.getCity());
+		                System.out.println("State : " + contact.getState());
+		                System.out.println("Zip : " + contact.getZip());
+		                System.out.println("Phone number : " + contact.getPhoneNo());
+		            }
+
+		        }
+		    }
 }
